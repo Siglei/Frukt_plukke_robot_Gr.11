@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<robot>
+  <gazebo>
+    <plugin name="mobile_base_controller" filename="libgazebo_ros_skid_steer_drive.so">
+      <updateRate>100.0</updateRate>
+      <robotNamespace>fruit_robot</robotNamespace>
+      <leftFrontJoint>wheel_front_left_joint</leftFrontJoint>
+      <rightFrontJoint>wheel_front_right_joint</rightFrontJoint>
+      <leftRearJoint>wheel_rear_left_joint</leftRearJoint>
+      <rightRearJoint>wheel_rear_right_joint</rightRearJoint>
+      <wheelSeparation>0.44</wheelSeparation>
+      <wheelDiameter>0.330</wheelDiameter>
+      <robotBaseFrame>mobile_body_link</robotBaseFrame>
+      <torque>50</torque>
+      <topicName>cmd_vel</topicName>
+      <commandTopic>cmd_vel</commandTopic>
+      <broadcastTF>true</broadcastTF>
+      <odometryTopic>odom</odometryTopic>
+      <odometryFrame>/odom</odometryFrame>
+      <covariance_x>0.000100</covariance_x>
+      <covariance_y>0.000100</covariance_y>
+      <covariance_yaw>0.010000</covariance_yaw>
+    </plugin>
+
+    <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+      <robotNamespace>fruit_robot</robotNamespace>
+      <controlPeriod>0.001</controlPeriod>
+      <robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType>
+    </plugin>
+
+  </gazebo>
+
+</robot>

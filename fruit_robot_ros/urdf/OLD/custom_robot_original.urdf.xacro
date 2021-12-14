@@ -1,0 +1,360 @@
+<?xml version='1.0'?>
+
+<robot name="mobile_manipulator_robot" xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <gazebo>
+    <!-- <static>true</static> -->
+  </gazebo>
+
+<!--############################### -->
+<!-- MOBILE PLATFORM -->
+<!--############################### -->
+  <origin xyz="0 0 0.15" rpy="0 0 0"/>
+  <link name="base_footprint"/>
+
+  <joint name="base_joint" type="fixed">
+    <parent link="base_footprint"/>
+    <child link="mobile_body_link" />
+    <origin xyz="0 0 0.0" rpy="0 0 0"/>
+  </joint>
+
+
+  <!-- MOBILE BASE -->
+  <!-- ==================================== -->
+  <xacro:property name="mobile_body_length" value="0.65" />
+  <xacro:property name="mobile_body_width" value="0.4" />
+  <xacro:property name="mobile_body_height" value="0.2" />
+  <xacro:property name="mobile_body_density" value="1" />
+  <xacro:property name="mobile_body_mass" value="${mobile_body_length*mobile_body_height*mobile_body_width*mobile_body_density}" />
+  <link name="mobile_body_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://custom_robot_tutorial/meshes/base_mesh.stl" />
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0.0" rpy="0 0 0"/>
+      <geometry>
+        <box size="${mobile_body_length} ${mobile_body_width} ${mobile_body_height}"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="${mobile_body_mass}"/>
+      <inertia
+        ixx="${mobile_body_mass*(pow(mobile_body_height,2) + pow(mobile_body_width,2))/12}" ixy="0.0" ixz="0.0"
+        iyy="${mobile_body_mass*(pow(mobile_body_length,2) + pow(mobile_body_height,2))/12}" iyz="0.0"
+        izz="${mobile_body_mass*(pow(mobile_body_length,2) + pow(mobile_body_width,2))/12}"/>
+    </inertial>
+  </link>
+
+  <!-- FRONT LEFT WHEEL -->
+  <!-- ==================================== -->
+  <xacro:property name="wheel_radius" value="0.1" />
+  <xacro:property name="wheel_length" value="0.1" />
+  <xacro:property name="wheel_density" value="1" />
+  <xacro:property name="wheel_mass" value="${pi*wheel_length*pow(wheel_radius,2)*wheel_density}" />
+  <joint type="continuous" name="wheel_front_left_joint">
+    <origin xyz="${mobile_body_length/2-wheel_radius-0.025} ${mobile_body_width/2 + wheel_length/2 + 0.005} -${mobile_body_height/4}" rpy="-${pi/2} 0 0"/>
+    <child link="wheel_front_left_link"/>
+    <parent link="mobile_body_link"/>
+    <axis xyz="0 0 1" rpy="0 0 0"/>
+    <limit effort="100" velocity="100"/>
+  </joint>
+
+  <link name="wheel_front_left_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://custom_robot_tutorial/meshes/wheel_mesh.stl" />
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <cylinder length="${wheel_length}" radius="${wheel_radius}"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="${wheel_mass}"/>
+      <inertia
+        ixx="${wheel_mass*(3*pow(wheel_radius,2)+pow(wheel_length,2))/12}" ixy="0.0" ixz="0.0"
+        iyy="${wheel_mass*(3*pow(wheel_radius,2)+pow(wheel_length,2))/12}" iyz="0.0"
+        izz="${wheel_mass*pow(wheel_radius,2)/2}"/>
+    </inertial>
+  </link>
+
+  <!-- FRONT RIGHT WHEEL -->
+  <!-- ==================================== -->
+  <xacro:property name="wheel_radius" value="0.1" />
+  <xacro:property name="wheel_length" value="0.1" />
+  <xacro:property name="wheel_density" value="1" />
+  <xacro:property name="wheel_mass" value="${pi*wheel_length*pow(wheel_radius,2)*wheel_density}" />
+  <joint type="continuous" name="wheel_front_right_joint">
+    <origin xyz="${mobile_body_length/2-wheel_radius-0.025} ${-(mobile_body_width/2 + wheel_length/2 + 0.005)} -${mobile_body_height/4}" rpy="-${pi/2} 0 0"/>
+    <child link="wheel_front_right_link"/>
+    <parent link="mobile_body_link"/>
+    <axis xyz="0 0 1" rpy="0 0 0"/>
+    <limit effort="100" velocity="100"/>
+  </joint>
+
+  <link name="wheel_front_right_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://custom_robot_tutorial/meshes/wheel_mesh.stl" />
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <cylinder length="${wheel_length}" radius="${wheel_radius}"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="${wheel_mass}"/>
+      <inertia
+        ixx="${wheel_mass*(3*pow(wheel_radius,2)+pow(wheel_length,2))/12}" ixy="0.0" ixz="0.0"
+        iyy="${wheel_mass*(3*pow(wheel_radius,2)+pow(wheel_length,2))/12}" iyz="0.0"
+        izz="${wheel_mass*pow(wheel_radius,2)/2}"/>
+    </inertial>
+  </link>
+
+  <!-- REAR RIGHT WHEEL -->
+  <!-- ==================================== -->
+  <xacro:property name="wheel_radius" value="0.1" />
+  <xacro:property name="wheel_length" value="0.1" />
+  <xacro:property name="wheel_density" value="1" />
+  <xacro:property name="wheel_mass" value="${pi*wheel_length*pow(wheel_radius,2)*wheel_density}" />
+  <joint type="continuous" name="wheel_rear_right_joint">
+    <origin xyz="${-(mobile_body_length/2-wheel_radius-0.025)} ${-(mobile_body_width/2 + wheel_length/2 + 0.005)} -${mobile_body_height/4}" rpy="-${pi/2} 0 0"/>
+    <child link="wheel_rear_right_link"/>
+    <parent link="mobile_body_link"/>
+    <axis xyz="0 0 1" rpy="0 0 0"/>
+    <limit effort="100" velocity="100"/>
+  </joint>
+
+  <link name="wheel_rear_right_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://custom_robot_tutorial/meshes/wheel_mesh.stl" />
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <cylinder length="${wheel_length}" radius="${wheel_radius}"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="${wheel_mass}"/>
+      <inertia
+        ixx="${wheel_mass*(3*pow(wheel_radius,2)+pow(wheel_length,2))/12}" ixy="0.0" ixz="0.0"
+        iyy="${wheel_mass*(3*pow(wheel_radius,2)+pow(wheel_length,2))/12}" iyz="0.0"
+        izz="${wheel_mass*pow(wheel_radius,2)/2}"/>
+    </inertial>
+  </link>
+
+  <!-- REAR LEFT WHEEL -->
+  <!-- ==================================== -->
+  <xacro:property name="wheel_radius" value="0.1" />
+  <xacro:property name="wheel_length" value="0.1" />
+  <xacro:property name="wheel_density" value="1" />
+  <xacro:property name="wheel_mass" value="${pi*wheel_length*pow(wheel_radius,2)*wheel_density}" />
+  <joint type="continuous" name="wheel_rear_left_joint">
+    <origin xyz="${-(mobile_body_length/2-wheel_radius-0.025)} ${(mobile_body_width/2 + wheel_length/2 + 0.005)} -${mobile_body_height/4}" rpy="-${pi/2} 0 0"/>
+    <child link="wheel_rear_left_link"/>
+    <parent link="mobile_body_link"/>
+    <axis xyz="0 0 1" rpy="0 0 0"/>
+    <limit effort="100" velocity="100"/>
+  </joint>
+
+  <link name="wheel_rear_left_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://custom_robot_tutorial/meshes/wheel_mesh.stl" />
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <cylinder length="${wheel_length}" radius="${wheel_radius}"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="${wheel_mass}"/>
+      <inertia
+        ixx="${wheel_mass*(3*pow(wheel_radius,2)+pow(wheel_length,2))/12}" ixy="0.0" ixz="0.0"
+        iyy="${wheel_mass*(3*pow(wheel_radius,2)+pow(wheel_length,2))/12}" iyz="0.0"
+        izz="${wheel_mass*pow(wheel_radius,2)/2}"/>
+    </inertial>
+  </link>
+
+  <!--############################### -->
+<!-- ROBOTIC ARM -->
+<!--############################### -->
+
+  <!-- ARM BASE -->
+  <!-- ==================================== -->
+  <joint type="revolute" name="arm_base_joint">
+    <origin xyz="0 0 ${mobile_body_height/2}" rpy="0 0 0"/>
+    <child link="arm_base_link"/>
+    <parent link="mobile_body_link"/>
+    <axis xyz="0 0 1" rpy="0 0 0"/>
+    <limit effort="100" velocity="100" lower="-${pi}" upper="${pi}"/>
+  </joint>
+
+  <xacro:property name="arm_base_radius" value="0.0675" />
+  <xacro:property name="arm_base_length" value="0.2" />
+  <xacro:property name="arm_base_density" value="1" />
+  <xacro:property name="arm_base_mass" value="${pi*arm_base_length*pow(arm_base_radius,2)*arm_base_density}" />
+  <link name="arm_base_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://custom_robot_tutorial/meshes/arm_base_mesh.stl" />
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0 0 ${arm_base_length/2}" rpy="0 0 0"/>
+      <geometry>
+        <cylinder length="${arm_base_length}" radius="${arm_base_radius}"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin xyz="0 0 ${arm_base_length/2}" rpy="0 0 0"/>
+      <mass value="${arm_base_mass}"/>
+      <inertia
+        ixx="${arm_base_mass*(3*pow(arm_base_radius,2)+pow(arm_base_length,2))/12}" ixy="0.0" ixz="0.0"
+        iyy="${arm_base_mass*(3*pow(arm_base_radius,2)+pow(arm_base_length,2))/12}" iyz="0.0"
+        izz="${arm_base_mass*pow(arm_base_radius,2)/2}"/>
+    </inertial>
+  </link>
+
+  <!-- LINK 1 -->
+  <!-- ==================================== -->
+  <joint type="revolute" name="link_1_joint">
+    <origin xyz="0 0 ${arm_base_length}" rpy="-${pi/2} 0 0"/>
+    <child link="link_1_link"/>
+    <parent link="arm_base_link"/>
+    <axis xyz="0 0 1" rpy="0 0 0"/>
+    <limit effort="100" velocity="100" lower="-${pi/2}" upper="${pi/2}"/>
+  </joint>
+
+  <xacro:property name="link_1_radius" value="0.0375" />
+  <xacro:property name="link_1_length" value="0.385" />
+  <xacro:property name="link_1_density" value="1" />
+  <xacro:property name="link_1_mass" value="${pi*link_1_length*pow(link_1_radius,2)*link_1_density}" />
+  <link name="link_1_link">
+    <visual>
+      <origin xyz="0 -${link_1_length/2} 0" rpy="${pi/2} 0 0"/>
+      <geometry>
+        <mesh filename="package://custom_robot_tutorial/meshes/link_1_mesh.stl" />
+        <!-- <cylinder length="${wheel_length}" radius="${wheel_radius}"/> -->
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0 -${link_1_length/2} 0" rpy="${pi/2} 0 0"/>
+      <geometry>
+        <!-- <mesh filename="package://custom_robot_tutorial/meshes/arm_base_mesh.stl" /> -->
+        <cylinder length="${link_1_length}" radius="${link_1_radius}"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin xyz="0 -${link_1_length/2} 0" rpy="${pi/2} 0 0"/>
+      <mass value="${link_1_mass}"/>
+      <inertia
+        ixx="${link_1_mass*(3*pow(link_1_radius,2)+pow(link_1_length,2))/12}" ixy="0.0" ixz="0.0"
+        iyy="${link_1_mass*(3*pow(link_1_radius,2)+pow(link_1_length,2))/12}" iyz="0.0"
+        izz="${link_1_mass*pow(link_1_radius,2)/2}"/>
+    </inertial>
+  </link>
+
+  <!-- LINK 2 -->
+  <!-- ==================================== -->
+  <joint type="revolute" name="link_2_joint">
+    <origin xyz="0 -${link_1_length} 0" rpy="0 0 0"/>
+    <child link="link_2_link"/>
+    <parent link="link_1_link"/>
+    <axis xyz="0 0 1" rpy="0 0 0"/>
+    <limit effort="100" velocity="100" lower="-${pi/2}" upper="${pi/2}"/>
+  </joint>
+
+  <xacro:property name="link_2_radius" value="0.0375" />
+  <xacro:property name="link_2_length" value="0.270" />
+  <xacro:property name="link_2_density" value="1" />
+  <xacro:property name="link_2_mass" value="${pi*link_2_length*pow(link_2_radius,2)*link_2_density}" />
+  <link name="link_2_link">
+    <visual>
+      <origin xyz="0 -${link_2_length/2} 0" rpy="${pi/2} 0 0"/>
+      <geometry>
+        <mesh filename="package://custom_robot_tutorial/meshes/link_2_mesh.stl" />
+        <!-- <cylinder length="${wheel_length}" radius="${wheel_radius}"/> -->
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0 -${link_2_length/2} 0" rpy="${pi/2} 0 0"/>
+      <geometry>
+        <!-- <mesh filename="package://custom_robot_tutorial/meshes/arm_base_mesh.stl" /> -->
+        <cylinder length="${link_2_length}" radius="${link_2_radius}"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin xyz="0 -${link_2_length/2} 0" rpy="${pi/2} 0 0"/>
+      <mass value="${link_2_mass}"/>
+      <inertia
+        ixx="${link_2_mass*(3*pow(link_2_radius,2)+pow(link_2_length,2))/12}" ixy="0.0" ixz="0.0"
+        iyy="${link_2_mass*(3*pow(link_2_radius,2)+pow(link_2_length,2))/12}" iyz="0.0"
+        izz="${link_2_mass*pow(link_2_radius,2)/2}"/>
+    </inertial>
+  </link>
+
+  <!-- LINK 3 -->
+  <!-- ==================================== -->
+  <xacro:property name="link_3_radius" value="0.0375" />
+  <xacro:property name="link_3_length" value="0.115" />
+  <xacro:property name="link_3_density" value="1" />
+  <xacro:property name="link_3_mass" value="${pi*link_3_length*pow(link_3_radius,2)*link_3_density}" />
+
+  <joint type="revolute" name="link_3_joint">
+    <origin xyz="0 -${link_2_length} 0" rpy="0 0 0"/>
+    <child link="link_3_link"/>
+    <parent link="link_2_link"/>
+    <axis xyz="0 0 1" rpy="0 0 0"/>
+    <limit effort="100" velocity="100" lower="-${pi/2}" upper="${pi/2}"/>
+  </joint>
+
+
+  <link name="link_3_link">
+    <visual>
+      <origin xyz="0 -${link_3_length} 0" rpy="${pi/2} 0 0"/>
+      <geometry>
+        <mesh filename="package://custom_robot_tutorial/meshes/link_3_mesh.stl" />
+        <!-- <cylinder length="${wheel_length}" radius="${wheel_radius}"/> -->
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0 -${link_3_length} 0" rpy="${pi/2} 0 0"/>
+      <geometry>
+        <!-- <mesh filename="package://custom_robot_tutorial/meshes/arm_base_mesh.stl" /> -->
+        <cylinder length="${link_3_length}" radius="${link_3_radius}"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin xyz="0 -${link_3_length} 0" rpy="${pi/2} 0 0"/>
+      <mass value="${link_3_mass}"/>
+      <inertia
+        ixx="${link_3_mass*(3*pow(link_3_radius,2)+pow(link_3_length,2))/12}" ixy="0.0" ixz="0.0"
+        iyy="${link_3_mass*(3*pow(link_3_radius,2)+pow(link_3_length,2))/12}" iyz="0.0"
+        izz="${link_3_mass*pow(link_3_radius,2)/2}"/>
+    </inertial>
+  </link>
+
+
+</robot>

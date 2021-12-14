@@ -1,0 +1,377 @@
+<?xml version='1.0'?>
+
+<robot name="fruit_robot" xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <gazebo>
+    <!-- <static>true</static> -->
+  </gazebo>
+
+<!--############################### -->
+<!-- MOBILE PLATFORM -->
+<!--############################### -->
+  <origin xyz="0 0 0.358" rpy="0 0 0"/>
+  <link name="base_footprint"/>
+
+  <joint name="base_joint" type="fixed">
+    <parent link="base_footprint"/>
+    <child link="base_link" />
+    <origin xyz="0 0 0.0" rpy="0 0 0"/>
+  </joint>
+
+
+  <!-- MOBILE BASE -->
+  <!-- ==================================== -->
+  <xacro:property name="base_link_length" value="0.8" />
+  <xacro:property name="base_link_width" value="0.42" />
+  <xacro:property name="base_link_height" value="0.22" />
+  <xacro:property name="base_link_density" value="1" />
+  <xacro:property name="base_link_mass" value="${base_link_length*base_link_height*base_link_width*base_link_density}" />
+  <link name="base_link">
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <!-- <mass value="55.03030560017143"/> -->
+      <mass value="base_link_mass"/>
+      <!-- <inertia ixx="1.590254" ixy="0.0" ixz="0.00021" iyy="3.455304" iyz="-0.0" izz="4.317959"/> -->
+      <inertia
+      ixx="${base_link_mass*(pow(base_link_height,2) + pow(base_link_width,2))/12}" ixy="0.0" ixz="0.0"
+      iyy="${base_link_mass*(pow(base_link_length,2) + pow(base_link_height,2))/12}" iyz="0.0"
+      izz="${base_link_mass*(pow(base_link_length,2) + pow(base_link_width,2))/12}"/>
+    </inertial>
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="package://fruit_robot/meshes/base_link.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <material name="silver"/>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="package://fruit_robot/meshes/base_link.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <!-- FRONT LEFT WHEEL -->
+  <!-- ==================================== -->
+  <xacro:property name="wheel_radius" value="0.1" />
+  <xacro:property name="wheel_length" value="0.1" />
+  <xacro:property name="wheel_density" value="1" />
+  <xacro:property name="wheel_mass" value="${pi*wheel_length*pow(wheel_radius,2)*wheel_density}" />
+  <joint type="continuous" name="wheel_front_left_joint">
+    <origin xyz="${base_link_length/2-wheel_radius-0.025} ${base_link_width/2 + wheel_length/2 + 0.005} -${base_link_height/4}" rpy="-${pi/2} 0 0"/>
+    <child link="wheel_front_left_link"/>
+    <parent link="base_link_link"/>
+    <axis xyz="0 0 1" rpy="0 0 0"/>
+    <limit effort="100" velocity="100"/>
+  </joint>
+
+  <link name="wheel_front_left_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://custom_robot_tutorial/meshes/wheel_mesh.stl" />
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <cylinder length="${wheel_length}" radius="${wheel_radius}"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="${wheel_mass}"/>
+      <inertia
+        ixx="${wheel_mass*(3*pow(wheel_radius,2)+pow(wheel_length,2))/12}" ixy="0.0" ixz="0.0"
+        iyy="${wheel_mass*(3*pow(wheel_radius,2)+pow(wheel_length,2))/12}" iyz="0.0"
+        izz="${wheel_mass*pow(wheel_radius,2)/2}"/>
+    </inertial>
+  </link>
+
+  <!-- FRONT RIGHT WHEEL -->
+  <!-- ==================================== -->
+  <xacro:property name="wheel_radius" value="0.1" />
+  <xacro:property name="wheel_length" value="0.1" />
+  <xacro:property name="wheel_density" value="1" />
+  <xacro:property name="wheel_mass" value="${pi*wheel_length*pow(wheel_radius,2)*wheel_density}" />
+  <joint type="continuous" name="wheel_front_right_joint">
+    <origin xyz="${base_link_length/2-wheel_radius-0.025} ${-(base_link_width/2 + wheel_length/2 + 0.005)} -${base_link_height/4}" rpy="-${pi/2} 0 0"/>
+    <child link="wheel_front_right_link"/>
+    <parent link="base_link_link"/>
+    <axis xyz="0 0 1" rpy="0 0 0"/>
+    <limit effort="100" velocity="100"/>
+  </joint>
+
+  <link name="wheel_front_right_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://custom_robot_tutorial/meshes/wheel_mesh.stl" />
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <cylinder length="${wheel_length}" radius="${wheel_radius}"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="${wheel_mass}"/>
+      <inertia
+        ixx="${wheel_mass*(3*pow(wheel_radius,2)+pow(wheel_length,2))/12}" ixy="0.0" ixz="0.0"
+        iyy="${wheel_mass*(3*pow(wheel_radius,2)+pow(wheel_length,2))/12}" iyz="0.0"
+        izz="${wheel_mass*pow(wheel_radius,2)/2}"/>
+    </inertial>
+  </link>
+
+  <!-- REAR RIGHT WHEEL -->
+  <!-- ==================================== -->
+  <xacro:property name="wheel_radius" value="0.1" />
+  <xacro:property name="wheel_length" value="0.1" />
+  <xacro:property name="wheel_density" value="1" />
+  <xacro:property name="wheel_mass" value="${pi*wheel_length*pow(wheel_radius,2)*wheel_density}" />
+  <joint type="continuous" name="wheel_rear_right_joint">
+    <origin xyz="${-(base_link_length/2-wheel_radius-0.025)} ${-(base_link_width/2 + wheel_length/2 + 0.005)} -${base_link_height/4}" rpy="-${pi/2} 0 0"/>
+    <child link="wheel_rear_right_link"/>
+    <parent link="base_link_link"/>
+    <axis xyz="0 0 1" rpy="0 0 0"/>
+    <limit effort="100" velocity="100"/>
+  </joint>
+
+  <link name="wheel_rear_right_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://custom_robot_tutorial/meshes/wheel_mesh.stl" />
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <cylinder length="${wheel_length}" radius="${wheel_radius}"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="${wheel_mass}"/>
+      <inertia
+        ixx="${wheel_mass*(3*pow(wheel_radius,2)+pow(wheel_length,2))/12}" ixy="0.0" ixz="0.0"
+        iyy="${wheel_mass*(3*pow(wheel_radius,2)+pow(wheel_length,2))/12}" iyz="0.0"
+        izz="${wheel_mass*pow(wheel_radius,2)/2}"/>
+    </inertial>
+  </link>
+
+  <!-- REAR LEFT WHEEL -->
+  <!-- ==================================== -->
+  <xacro:property name="wheel_radius" value="0.1" />
+  <xacro:property name="wheel_length" value="0.1" />
+  <xacro:property name="wheel_density" value="1" />
+  <xacro:property name="wheel_mass" value="${pi*wheel_length*pow(wheel_radius,2)*wheel_density}" />
+  <joint type="continuous" name="wheel_rear_left_joint">
+    <origin xyz="${-(base_link_length/2-wheel_radius-0.025)} ${(base_link_width/2 + wheel_length/2 + 0.005)} -${base_link_height/4}" rpy="-${pi/2} 0 0"/>
+    <child link="wheel_rear_left_link"/>
+    <parent link="base_link_link"/>
+    <axis xyz="0 0 1" rpy="0 0 0"/>
+    <limit effort="100" velocity="100"/>
+  </joint>
+
+  <link name="wheel_rear_left_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://custom_robot_tutorial/meshes/wheel_mesh.stl" />
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <cylinder length="${wheel_length}" radius="${wheel_radius}"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="${wheel_mass}"/>
+      <inertia
+        ixx="${wheel_mass*(3*pow(wheel_radius,2)+pow(wheel_length,2))/12}" ixy="0.0" ixz="0.0"
+        iyy="${wheel_mass*(3*pow(wheel_radius,2)+pow(wheel_length,2))/12}" iyz="0.0"
+        izz="${wheel_mass*pow(wheel_radius,2)/2}"/>
+    </inertial>
+  </link>
+
+  <!--############################### -->
+<!-- ROBOTIC ARM -->
+<!--############################### -->
+
+  <!-- ARM BASE -->
+  <!-- ==================================== -->
+  <link name="robo_base_1">
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <mass value="2.8686485811941256"/>
+      <inertia ixx="0.007442" ixy="-0.0" ixz="7.6e-05" iyy="0.007508" iyz="5e-06" izz="0.003116"/>
+    </inertial>
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="package://fruit_ros_description/meshes/robo_base_1.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <material name="silver"/>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="package://fruit_ros_description/meshes/robo_base_1.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <!-- ARM LINK -->
+  <!-- ==================================== -->
+  <!-- <link name="link_1_1">
+    <inertial>
+      <origin rpy="0 0 0" xyz="-7.568800909248108e-09 0.011019696658199483 0.07626434040191188"/>
+      <mass value="1.6702351491714478"/>
+      <inertia ixx="0.005515" ixy="0.0" ixz="0.0" iyy="0.005748" iyz="-0.000654" izz="0.001643"/>
+    </inertial>
+    <visual>
+      <origin rpy="0 0 0" xyz="0.0 -0.0 -0.527425"/>
+      <geometry>
+        <mesh filename="package://fruit_ros_description/meshes/link_1_1.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <material name="silver"/>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0.0 -0.0 -0.527425"/>
+      <geometry>
+        <mesh filename="package://fruit_ros_description/meshes/link_1_1.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+    </collision>
+  </link> -->
+
+  <!-- <link name="link_2_1">
+    <inertial>
+      <origin rpy="0 0 0" xyz="0.10413768506765335 -0.02271930619479503 0.1803718456195249"/>
+      <mass value="4.828876187675906"/>
+      <inertia ixx="0.137637" ixy="-0.000193" ixz="-0.077583" iyy="0.183869" iyz="-0.000334" izz="0.048052"/>
+    </inertial>
+    <visual>
+      <origin rpy="0 0 0" xyz="0.0 0.005375 -0.6558"/>
+      <geometry>
+        <mesh filename="package://fruit_ros_description/meshes/link_2_1.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <material name="silver"/>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0.0 0.005375 -0.6558"/>
+      <geometry>
+        <mesh filename="package://fruit_ros_description/meshes/link_2_1.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+    </collision>
+  </link> -->
+
+  <!-- <link name="link_3_1">
+    <inertial>
+      <origin rpy="0 0 0" xyz="-0.07229608269790588 0.017525898693378533 0.006325606794564509"/>
+      <mass value="1.2643948660755089"/>
+      <inertia ixx="0.00097" ixy="-0.000876" ixz="0.000845" iyy="0.010746" iyz="7.7e-05" izz="0.010548"/>
+    </inertial>
+    <visual>
+      <origin rpy="0 0 0" xyz="-0.205 0.005375 -1.01087"/>
+      <geometry>
+        <mesh filename="package://fruit_ros_description/meshes/link_3_1.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <material name="silver"/>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="-0.205 0.005375 -1.01087"/>
+      <geometry>
+        <mesh filename="package://fruit_ros_description/meshes/link_3_1.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+    </collision>
+  </link> -->
+
+  <!-- <link name="link_4_1">
+    <inertial>
+      <origin rpy="0 0 0" xyz="-0.06384694275172988 -0.010452252673189454 0.005585752569482461"/>
+      <mass value="0.7889979638503541"/>
+      <inertia ixx="0.00049" ixy="-0.000322" ixz="0.000117" iyy="0.001814" iyz="2.8e-05" izz="0.001823"/>
+    </inertial>
+    <visual>
+      <origin rpy="0 0 0" xyz="0.002632 -0.001 -1.029036"/>
+      <geometry>
+        <mesh filename="package://fruit_ros_description/meshes/link_4_1.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <material name="silver"/>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0.002632 -0.001 -1.029036"/>
+      <geometry>
+        <mesh filename="package://fruit_ros_description/meshes/link_4_1.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+    </collision>
+  </link> -->
+
+  <!-- <link name="link_5_1">
+    <inertial>
+      <origin rpy="0 0 0" xyz="-0.04421416444603249 0.010243966118229076 0.0038680322760000774"/>
+      <mass value="0.7574122178487069"/>
+      <inertia ixx="0.000475" ixy="-0.000316" ixz="0.000116" iyy="0.001786" iyz="2.8e-05" izz="0.001794"/>
+    </inertial>
+    <visual>
+      <origin rpy="0 0 0" xyz="0.108154 -0.001175 -1.038268"/>
+      <geometry>
+        <mesh filename="package://fruit_ros_description/meshes/link_5_1.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <material name="silver"/>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0.108154 -0.001175 -1.038268"/>
+      <geometry>
+        <mesh filename="package://fruit_ros_description/meshes/link_5_1.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+    </collision>
+  </link> -->
+
+  <!-- <link name="link_6_1">
+    <inertial>
+      <origin rpy="0 0 0" xyz="-0.030316133527141853 0.0002809988951784001 0.0188480351164384"/>
+      <mass value="0.2557405908013451"/>
+      <inertia ixx="0.000396" ixy="1e-06" ixz="6e-05" iyy="0.000376" iyz="1e-06" izz="0.000236"/>
+    </inertial>
+    <visual>
+      <origin rpy="0 0 0" xyz="0.213676 -0.00135 -1.0475"/>
+      <geometry>
+        <mesh filename="package://fruit_ros_description/meshes/link_6_1.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <material name="silver"/>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0.213676 -0.00135 -1.0475"/>
+      <geometry>
+        <mesh filename="package://fruit_ros_description/meshes/link_6_1.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+    </collision>
+  </link> -->
+
+  <!-- <link name="gripper_1">
+    <inertial>
+      <origin rpy="0 0 0" xyz="-0.16940436521430124 0.2761038706640693 0.014972368352804688"/>
+      <mass value="0.8326344595331522"/>
+      <inertia ixx="0.001045" ixy="0.0" ixz="6.8e-05" iyy="0.001141" iyz="-4e-06" izz="0.001843"/>
+    </inertial>
+    <visual>
+      <origin rpy="0 0 0" xyz="0.151733 0.274725 -1.041886"/>
+      <geometry>
+        <mesh filename="package://fruit_ros_description/meshes/gripper_1.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <material name="silver"/>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0.151733 0.274725 -1.041886"/>
+      <geometry>
+        <mesh filename="package://fruit_ros_description/meshes/gripper_1.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+    </collision>
+  </link> -->
+</robot>

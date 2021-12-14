@@ -1,0 +1,362 @@
+<?xml version="1.0" ?>
+<robot name="fruit_ros" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+<xacro:include filename="$(find fruit_ros_description)/urdf/materials.xacro" />
+<xacro:include filename="$(find fruit_ros_description)/urdf/fruit_ros.trans" />
+<xacro:include filename="$(find fruit_ros_description)/urdf/fruit_ros.gazebo" />
+<link name="base_link">
+  <inertial>
+    <origin rpy="0 0 0" xyz="0.12196981323501736 3.9467705556831103e-08 0.25124197508381657"/>
+    <mass value="55.03030560017143"/>
+    <inertia ixx="1.590254" ixy="0.0" ixz="0.00021" iyy="3.455304" iyz="-0.0" izz="4.317959"/>
+  </inertial>
+  <visual>
+    <origin rpy="0 0 0" xyz="0 0 0"/>
+    <geometry>
+      <mesh filename="package://fruit_ros_description/meshes/base_link.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin rpy="0 0 0" xyz="0 0 0"/>
+    <geometry>
+      <mesh filename="package://fruit_ros_description/meshes/base_link.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="link_1_1">
+  <inertial>
+    <origin rpy="0 0 0" xyz="-7.568800909248108e-09 0.011019696658199483 0.07626434040191188"/>
+    <mass value="1.6702351491714478"/>
+    <inertia ixx="0.005515" ixy="0.0" ixz="0.0" iyy="0.005748" iyz="-0.000654" izz="0.001643"/>
+  </inertial>
+  <visual>
+    <origin rpy="0 0 0" xyz="0.0 -0.0 -0.527425"/>
+    <geometry>
+      <mesh filename="package://fruit_ros_description/meshes/link_1_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin rpy="0 0 0" xyz="0.0 -0.0 -0.527425"/>
+    <geometry>
+      <mesh filename="package://fruit_ros_description/meshes/link_1_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="link_2_1">
+  <inertial>
+    <origin rpy="0 0 0" xyz="0.10413768506765335 -0.02271930619479503 0.1803718456195249"/>
+    <mass value="4.828876187675906"/>
+    <inertia ixx="0.137637" ixy="-0.000193" ixz="-0.077583" iyy="0.183869" iyz="-0.000334" izz="0.048052"/>
+  </inertial>
+  <visual>
+    <origin rpy="0 0 0" xyz="0.0 0.005375 -0.6558"/>
+    <geometry>
+      <mesh filename="package://fruit_ros_description/meshes/link_2_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin rpy="0 0 0" xyz="0.0 0.005375 -0.6558"/>
+    <geometry>
+      <mesh filename="package://fruit_ros_description/meshes/link_2_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="link_3_1">
+  <inertial>
+    <origin rpy="0 0 0" xyz="-0.07229608269790588 0.017525898693378533 0.006325606794564509"/>
+    <mass value="1.2643948660755089"/>
+    <inertia ixx="0.00097" ixy="-0.000876" ixz="0.000845" iyy="0.010746" iyz="7.7e-05" izz="0.010548"/>
+  </inertial>
+  <visual>
+    <origin rpy="0 0 0" xyz="-0.205 0.005375 -1.01087"/>
+    <geometry>
+      <mesh filename="package://fruit_ros_description/meshes/link_3_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin rpy="0 0 0" xyz="-0.205 0.005375 -1.01087"/>
+    <geometry>
+      <mesh filename="package://fruit_ros_description/meshes/link_3_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="link_4_1">
+  <inertial>
+    <origin rpy="0 0 0" xyz="-0.06384694275172988 -0.010452252673189454 0.005585752569482461"/>
+    <mass value="0.7889979638503541"/>
+    <inertia ixx="0.00049" ixy="-0.000322" ixz="0.000117" iyy="0.001814" iyz="2.8e-05" izz="0.001823"/>
+  </inertial>
+  <visual>
+    <origin rpy="0 0 0" xyz="0.002632 -0.001 -1.029036"/>
+    <geometry>
+      <mesh filename="package://fruit_ros_description/meshes/link_4_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin rpy="0 0 0" xyz="0.002632 -0.001 -1.029036"/>
+    <geometry>
+      <mesh filename="package://fruit_ros_description/meshes/link_4_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="link_5_1">
+  <inertial>
+    <origin rpy="0 0 0" xyz="-0.04421416444603249 0.010243966118229076 0.0038680322760000774"/>
+    <mass value="0.7574122178487069"/>
+    <inertia ixx="0.000475" ixy="-0.000316" ixz="0.000116" iyy="0.001786" iyz="2.8e-05" izz="0.001794"/>
+  </inertial>
+  <visual>
+    <origin rpy="0 0 0" xyz="0.108154 -0.001175 -1.038268"/>
+    <geometry>
+      <mesh filename="package://fruit_ros_description/meshes/link_5_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin rpy="0 0 0" xyz="0.108154 -0.001175 -1.038268"/>
+    <geometry>
+      <mesh filename="package://fruit_ros_description/meshes/link_5_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="link_6_1">
+  <inertial>
+    <origin rpy="0 0 0" xyz="-0.030316133527141853 0.0002809988951784001 0.0188480351164384"/>
+    <mass value="0.2557405908013451"/>
+    <inertia ixx="0.000396" ixy="1e-06" ixz="6e-05" iyy="0.000376" iyz="1e-06" izz="0.000236"/>
+  </inertial>
+  <visual>
+    <origin rpy="0 0 0" xyz="0.213676 -0.00135 -1.0475"/>
+    <geometry>
+      <mesh filename="package://fruit_ros_description/meshes/link_6_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin rpy="0 0 0" xyz="0.213676 -0.00135 -1.0475"/>
+    <geometry>
+      <mesh filename="package://fruit_ros_description/meshes/link_6_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="gripper_1">
+  <inertial>
+    <origin rpy="0 0 0" xyz="-0.16940436521430124 0.2761038706640693 0.014972368352804688"/>
+    <mass value="0.8326344595331522"/>
+    <inertia ixx="0.001045" ixy="0.0" ixz="6.8e-05" iyy="0.001141" iyz="-4e-06" izz="0.001843"/>
+  </inertial>
+  <visual>
+    <origin rpy="0 0 0" xyz="0.151733 0.274725 -1.041886"/>
+    <geometry>
+      <mesh filename="package://fruit_ros_description/meshes/gripper_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin rpy="0 0 0" xyz="0.151733 0.274725 -1.041886"/>
+    <geometry>
+      <mesh filename="package://fruit_ros_description/meshes/gripper_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="robo_base_1">
+  <inertial>
+    <origin rpy="0 0 0" xyz="0.000726515850929188 -0.00010648785331383357 0.07814541447663209"/>
+    <mass value="2.8686485811941256"/>
+    <inertia ixx="0.007442" ixy="-0.0" ixz="7.6e-05" iyy="0.007508" iyz="5e-06" izz="0.003116"/>
+  </inertial>
+  <visual>
+    <origin rpy="0 0 0" xyz="-6.2e-05 -0.000157 -0.371"/>
+    <geometry>
+      <mesh filename="package://fruit_ros_description/meshes/robo_base_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin rpy="0 0 0" xyz="-6.2e-05 -0.000157 -0.371"/>
+    <geometry>
+      <mesh filename="package://fruit_ros_description/meshes/robo_base_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="front_left_wheel_1">
+  <inertial>
+    <origin rpy="0 0 0" xyz="-1.719738423888728e-08 0.05750011981745545 -4.353202356921493e-08"/>
+    <mass value="9.473394298886726"/>
+    <inertia ixx="0.078845" ixy="0.0" ixz="0.0" iyy="0.136814" iyz="0.0" izz="0.078845"/>
+  </inertial>
+  <visual>
+    <origin rpy="0 0 0" xyz="0.133 0.335 -0.1775"/>
+    <geometry>
+      <mesh filename="package://fruit_ros_description/meshes/front_left_wheel_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin rpy="0 0 0" xyz="0.133 0.335 -0.1775"/>
+    <geometry>
+      <mesh filename="package://fruit_ros_description/meshes/front_left_wheel_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="rear_left_wheel_1">
+  <inertial>
+    <origin rpy="0 0 0" xyz="1.719738595973297e-08 0.057499880182544705 -4.353202362472608e-08"/>
+    <mass value="9.473394298886726"/>
+    <inertia ixx="0.078845" ixy="0.0" ixz="-0.0" iyy="0.136814" iyz="-0.0" izz="0.078845"/>
+  </inertial>
+  <visual>
+    <origin rpy="0 0 0" xyz="-0.377 0.335 -0.1775"/>
+    <geometry>
+      <mesh filename="package://fruit_ros_description/meshes/rear_left_wheel_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin rpy="0 0 0" xyz="-0.377 0.335 -0.1775"/>
+    <geometry>
+      <mesh filename="package://fruit_ros_description/meshes/rear_left_wheel_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="front_right_wheel_1">
+  <inertial>
+    <origin rpy="0 0 0" xyz="-1.7197384155620554e-08 -0.05749988018254476 -4.3532023596970504e-08"/>
+    <mass value="9.473394298886726"/>
+    <inertia ixx="0.078845" ixy="0.0" ixz="0.0" iyy="0.136814" iyz="0.0" izz="0.078845"/>
+  </inertial>
+  <visual>
+    <origin rpy="0 0 0" xyz="0.133 -0.335 -0.1775"/>
+    <geometry>
+      <mesh filename="package://fruit_ros_description/meshes/front_right_wheel_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin rpy="0 0 0" xyz="0.133 -0.335 -0.1775"/>
+    <geometry>
+      <mesh filename="package://fruit_ros_description/meshes/front_right_wheel_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="rear_right_wheel_1">
+  <inertial>
+    <origin rpy="0 0 0" xyz="1.719738240701929e-08 -0.05750011981745534 -4.353202362472608e-08"/>
+    <mass value="9.473394298886726"/>
+    <inertia ixx="0.078845" ixy="0.0" ixz="-0.0" iyy="0.136814" iyz="-0.0" izz="0.078845"/>
+  </inertial>
+  <visual>
+    <origin rpy="0 0 0" xyz="-0.377 -0.335 -0.1775"/>
+    <geometry>
+      <mesh filename="package://fruit_ros_description/meshes/rear_right_wheel_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin rpy="0 0 0" xyz="-0.377 -0.335 -0.1775"/>
+    <geometry>
+      <mesh filename="package://fruit_ros_description/meshes/rear_right_wheel_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<joint name="joint1" type="continuous">
+  <origin rpy="0 0 0" xyz="-6.2e-05 -0.000157 0.156425"/>
+  <parent link="robo_base_1"/>
+  <child link="link_1_1"/>
+  <axis xyz="-0.0 -0.0 1.0"/>
+</joint>
+
+<joint name="joint2" type="continuous">
+  <origin rpy="0 0 0" xyz="0.0 -0.005375 0.128375"/>
+  <parent link="link_1_1"/>
+  <child link="link_2_1"/>
+  <axis xyz="-0.0 -1.0 0.0"/>
+</joint>
+
+<joint name="joint3" type="continuous">
+  <origin rpy="0 0 0" xyz="0.205 0.0 0.35507"/>
+  <parent link="link_2_1"/>
+  <child link="link_3_1"/>
+  <axis xyz="0.0 1.0 -0.0"/>
+</joint>
+
+<joint name="joint4" type="continuous">
+  <origin rpy="0 0 0" xyz="-0.207632 0.006375 0.018166"/>
+  <parent link="link_3_1"/>
+  <child link="link_4_1"/>
+  <axis xyz="-0.996195 0.0 0.087156"/>
+</joint>
+
+<joint name="joint5" type="continuous">
+  <origin rpy="0 0 0" xyz="-0.105522 0.000175 0.009232"/>
+  <parent link="link_4_1"/>
+  <child link="link_5_1"/>
+  <axis xyz="0.0 1.0 -0.0"/>
+</joint>
+
+<joint name="join6" type="continuous">
+  <origin rpy="0 0 0" xyz="-0.105522 0.000175 0.009232"/>
+  <parent link="link_5_1"/>
+  <child link="link_6_1"/>
+  <axis xyz="-0.996195 0.0 0.087156"/>
+</joint>
+
+<joint name="rigid_gripper" type="fixed">
+  <origin rpy="0 0 0" xyz="0.061943 -0.276075 -0.005614"/>
+  <parent link="link_6_1"/>
+  <child link="gripper_1"/>
+</joint>
+
+<joint name="robot_to_base" type="fixed">
+  <origin rpy="0 0 0" xyz="6.2e-05 0.000157 0.371"/>
+  <parent link="base_link"/>
+  <child link="robo_base_1"/>
+</joint>
+
+<joint name="front_left_wheel_joint" type="continuous">
+  <origin rpy="0 0 0" xyz="-0.133 -0.335 0.1775"/>
+  <parent link="base_link"/>
+  <child link="front_left_wheel_1"/>
+  <axis xyz="0.0 -1.0 0.0"/>
+</joint>
+
+<joint name="rear_left_wheel_joint" type="continuous">
+  <origin rpy="0 0 0" xyz="0.377 -0.335 0.1775"/>
+  <parent link="base_link"/>
+  <child link="rear_left_wheel_1"/>
+  <axis xyz="0.0 -1.0 0.0"/>
+</joint>
+
+<joint name="front_right_wheel_joint" type="continuous">
+  <origin rpy="0 0 0" xyz="-0.133 0.335 0.1775"/>
+  <parent link="base_link"/>
+  <child link="front_right_wheel_1"/>
+  <axis xyz="0.0 1.0 0.0"/>
+</joint>
+
+<joint name="rear_right_wheel_joint" type="continuous">
+  <origin rpy="0 0 0" xyz="0.377 0.335 0.1775"/>
+  <parent link="base_link"/>
+  <child link="rear_right_wheel_1"/>
+  <axis xyz="0.0 1.0 0.0"/>
+</joint>
+
+</robot>

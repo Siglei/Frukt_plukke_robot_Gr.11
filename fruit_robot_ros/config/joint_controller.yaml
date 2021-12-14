@@ -1,0 +1,35 @@
+fruit_robot:
+  # Publish all joint states -----------------------------------
+  joint_state_controller:
+    type: joint_state_controller/JointStateController
+    publish_rate: 1000
+
+  # Controller
+  joint_1_controller:
+    type: position_controllers/JointPositionController
+    joint: link_1_joint
+
+  # Controller
+  joint_2_controller:
+    type: position_controllers/JointPositionController
+    joint: link_2_joint
+
+  # Controller
+  joint_3_controller:
+    type: position_controllers/JointPositionController
+    joint: link_3_joint
+
+  # Controller
+  joint_4_controller:
+    type: position_controllers/JointPositionController
+    joint: link_4_joint
+
+  # Controller
+  joint_5_controller:
+    type: position_controllers/JointPositionController
+    joint: link_5_joint
+
+  # Controller
+  joint_6_controller:
+    type: position_controllers/JointPositionController
+    joint: link_6_joint

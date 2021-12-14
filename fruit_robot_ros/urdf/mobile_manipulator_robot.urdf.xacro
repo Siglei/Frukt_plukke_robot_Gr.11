@@ -1,0 +1,629 @@
+<?xml version='1.0'?>
+
+<robot name="fruit_robot" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <xacro:include filename="$(find fruit_robot)/urdf/mobile_manipulator_robot.urdf.gazebo" />
+
+<!--############################### -->
+<!-- MOBILE PLATFORM -->
+<!--############################### -->
+  <origin xyz="0 0 0.358" rpy="0 0 0"/>
+  <link name="base_footprint"/>
+
+  <joint name="base_joint" type="fixed">
+    <parent link="base_footprint"/>
+    <child link="mobile_body_link" />
+    <origin xyz="0 0 0.0" rpy="0 0 0"/>
+  </joint>
+
+
+  <!-- MOBILE BASE -->
+  <!-- ==================================== -->
+  <xacro:property name="mobile_body_length" value="0.8" />
+  <xacro:property name="mobile_body_width" value="0.42" />
+  <xacro:property name="mobile_body_height" value="0.22" />
+  <xacro:property name="mobile_body_density" value="1" />
+  <xacro:property name="mobile_body_mass" value="${mobile_body_length*mobile_body_height*mobile_body_width*mobile_body_density}" />
+  <link name="mobile_body_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://fruit_robot/meshes/base_link.stl" scale="0.01 0.01 0.01"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0.120 0 -0.11" rpy="0 0 0"/>
+      <geometry>
+        <box size="${mobile_body_length+0.005} ${mobile_body_width} ${mobile_body_height}"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="${mobile_body_mass}"/>
+      <inertia
+        ixx="${mobile_body_mass*(pow(mobile_body_height,2) + pow(mobile_body_width,2))/12}" ixy="0.0" ixz="0.0"
+        iyy="${mobile_body_mass*(pow(mobile_body_length,2) + pow(mobile_body_height,2))/12}" iyz="0.0"
+        izz="${mobile_body_mass*(pow(mobile_body_length,2) + pow(mobile_body_width,2))/12}"/>
+    </inertial>
+  </link>
+
+  <!-- FRONT LEFT WHEEL -->
+  <!-- ==================================== -->
+  <xacro:property name="wheel_radius" value="0.17" />
+  <xacro:property name="wheel_length" value="0.115" />
+  <xacro:property name="wheel_density" value="1" />
+  <xacro:property name="wheel_mass" value="${pi*wheel_length*pow(wheel_radius,2)*wheel_density}" />
+  <joint type="continuous" name="wheel_front_left_joint">
+    <origin xyz="-0.133 -${mobile_body_width/2 + wheel_length/2 +0.01} -0.192" rpy="${pi/2} 0 0"/>
+    <child link="wheel_front_left_link"/>
+    <parent link="mobile_body_link"/>
+    <axis xyz="0 0 1" rpy="0 0 0"/>
+    <limit effort="100" velocity="100"/>
+  </joint>
+
+  <link name="wheel_front_left_link">
+    <visual>
+      <origin xyz="0.133 -0.192 ${mobile_body_width/2 + wheel_length/2 + 0.01}" rpy="${pi/2} 0 0"/>
+      <geometry>
+        <mesh filename="package://fruit_robot/meshes/front_left_wheel_1.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <cylinder length="${wheel_length}" radius="${wheel_radius+0.003}"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="${wheel_mass}"/>
+      <inertia
+        ixx="${wheel_mass*(3*pow(wheel_radius,2)+pow(wheel_length,2))/12}" ixy="0.0" ixz="0.0"
+        iyy="${wheel_mass*(3*pow(wheel_radius,2)+pow(wheel_length,2))/12}" iyz="0.0"
+        izz="${wheel_mass*pow(wheel_radius,2)/2}"/>
+    </inertial>
+  </link>
+
+  <!-- FRONT RIGHT WHEEL -->
+  <!-- ==================================== -->
+  <joint type="continuous" name="wheel_front_right_joint">
+    <origin xyz="-0.133 ${mobile_body_width/2 + wheel_length/2 +0.01} -0.192" rpy="-${pi/2} 0 ${pi}"/>
+    <child link="wheel_front_right_link"/>
+    <parent link="mobile_body_link"/>
+    <axis xyz="0 0 1" rpy="0 0 0"/>
+    <limit effort="100" velocity="100"/>
+  </joint>
+
+  <link name="wheel_front_right_link">
+    <visual>
+      <origin xyz="0.133 -0.192 -${mobile_body_width/2 + wheel_length/2 + 0.01}" rpy="${pi/2} 0 0"/>
+      <geometry>
+        <mesh filename="package://fruit_robot/meshes/front_right_wheel_1.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <cylinder length="${wheel_length}" radius="${wheel_radius}"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="${wheel_mass}"/>
+      <inertia
+        ixx="${wheel_mass*(3*pow(wheel_radius,2)+pow(wheel_length,2))/12}" ixy="0.0" ixz="0.0"
+        iyy="${wheel_mass*(3*pow(wheel_radius,2)+pow(wheel_length,2))/12}" iyz="0.0"
+        izz="${wheel_mass*pow(wheel_radius,2)/2}"/>
+    </inertial>
+  </link>
+
+  <!-- REAR RIGHT WHEEL -->
+  <!-- ==================================== -->
+  <joint type="continuous" name="wheel_rear_right_joint">
+    <origin xyz="0.377 ${mobile_body_width/2 + wheel_length/2 +0.01} -0.192" rpy="-${pi/2} 0 ${pi}"/>
+    <child link="wheel_rear_right_link"/>
+    <parent link="mobile_body_link"/>
+    <axis xyz="0 0 1" rpy="0 0 0"/>
+    <limit effort="100" velocity="100"/>
+  </joint>
+
+  <link name="wheel_rear_right_link">
+    <visual>
+      <origin xyz="-0.377 -0.192 -${mobile_body_width/2 + wheel_length/2 + 0.01}" rpy="${pi/2} 0 0"/>
+      <geometry>
+        <mesh filename="package://fruit_robot/meshes/rear_right_wheel_1.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <cylinder length="${wheel_length}" radius="${wheel_radius}"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="${wheel_mass}"/>
+      <inertia
+        ixx="${wheel_mass*(3*pow(wheel_radius,2)+pow(wheel_length,2))/12}" ixy="0.0" ixz="0.0"
+        iyy="${wheel_mass*(3*pow(wheel_radius,2)+pow(wheel_length,2))/12}" iyz="0.0"
+        izz="${wheel_mass*pow(wheel_radius,2)/2}"/>
+    </inertial>
+  </link>
+
+  <!-- REAR LEFT WHEEL -->
+  <!-- ==================================== -->
+  <joint type="continuous" name="wheel_rear_left_joint">
+    <origin xyz="0.377 -${mobile_body_width/2 + wheel_length/2 +0.01} -0.192" rpy="${pi/2} 0 0"/>
+    <child link="wheel_rear_left_link"/>
+    <parent link="mobile_body_link"/>
+    <axis xyz="0 0 1" rpy="0 0 0"/>
+    <limit effort="100" velocity="100"/>
+  </joint>
+
+  <link name="wheel_rear_left_link">
+    <visual>
+      <origin xyz="-0.377 -0.192 ${mobile_body_width/2 + wheel_length/2 + 0.01}" rpy="${pi/2} 0 0"/>
+      <geometry>
+        <mesh filename="package://fruit_robot/meshes/rear_left_wheel_1.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <cylinder length="${wheel_length}" radius="${wheel_radius}"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="${wheel_mass}"/>
+      <inertia
+        ixx="${wheel_mass*(3*pow(wheel_radius,2)+pow(wheel_length,2))/12}" ixy="0.0" ixz="0.0"
+        iyy="${wheel_mass*(3*pow(wheel_radius,2)+pow(wheel_length,2))/12}" iyz="0.0"
+        izz="${wheel_mass*pow(wheel_radius,2)/2}"/>
+    </inertial>
+  </link>
+
+<!--############################### -->
+<!-- ROBOTIC ARM -->
+<!--############################### -->
+
+  <!-- ARM BASE -->
+  <!-- ==================================== -->
+  <joint type="fixed" name="arm_base_joint">
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <child link="arm_base_link"/>
+    <parent link="mobile_body_link"/>
+  </joint>
+
+  <xacro:property name="arm_base_radius" value="0.046" />
+  <xacro:property name="arm_base_length" value="0.1564" />
+  <xacro:property name="arm_base_density" value="1" />
+  <xacro:property name="arm_base_mass" value="${pi*arm_base_length*pow(arm_base_radius,2)*arm_base_density}" />
+  <link name="arm_base_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://fruit_robot/meshes/robo_base_1.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0 0 ${arm_base_length/2}" rpy="0 0 0"/>
+      <geometry>
+        <cylinder length="${arm_base_length}" radius="${arm_base_radius}"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin xyz="0 0 ${arm_base_length/2}" rpy="0 0 0"/>
+      <mass value="${arm_base_mass}"/>
+      <inertia
+        ixx="${arm_base_mass*(3*pow(arm_base_radius,2)+pow(arm_base_length,2))/12}" ixy="0.0" ixz="0.0"
+        iyy="${arm_base_mass*(3*pow(arm_base_radius,2)+pow(arm_base_length,2))/12}" iyz="0.0"
+        izz="${arm_base_mass*pow(arm_base_radius,2)/2}"/>
+    </inertial>
+  </link>
+
+  <!-- LINK 1 -->
+  <!-- ==================================== -->
+  <xacro:property name="link_1_radius" value="0.046" />
+  <xacro:property name="link_1_length" value="0.1284" />
+  <xacro:property name="link_1_density" value="1" />
+  <xacro:property name="link_1_mass" value="${pi*link_1_length*pow(link_1_radius,2)*link_1_density}" />
+
+  <joint type="revolute" name="link_1_joint">
+    <origin xyz="0 0 ${arm_base_length}" rpy="0 0 0"/>
+    <child link="link_1_link"/>
+    <parent link="arm_base_link"/>
+    <axis xyz="0 0 1" rpy="0 0 0"/>
+    <limit effort="100" velocity="100" lower="-${pi/2}" upper="${pi/2}"/>
+  </joint>
+
+  <link name="link_1_link">
+    <visual>
+      <origin xyz="0 0 -${arm_base_length}" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://fruit_robot/meshes/link_1_1.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0 0 ${link_1_length/2}" rpy="0 0 0"/>
+      <geometry>
+        <cylinder length="${link_1_length}" radius="${link_1_radius}"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin xyz="0 0 ${link_1_length/2}" rpy="0 0 0"/>
+      <mass value="${link_1_mass}"/>
+      <inertia
+        ixx="${link_1_mass*(3*pow(link_1_radius,2)+pow(link_1_length,2))/12}" ixy="0.0" ixz="0.0"
+        iyy="${link_1_mass*(3*pow(link_1_radius,2)+pow(link_1_length,2))/12}" iyz="0.0"
+        izz="${link_1_mass*pow(link_1_radius,2)/2}"/>
+    </inertial>
+  </link>
+
+  <transmission name="trans_1">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="link_1_joint">
+      <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="trans_1_motor">
+      <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+
+  <!-- LINK 2 -->
+  <!-- ==================================== -->
+  <xacro:property name="link_2_radius" value="0.046" />
+  <xacro:property name="link_2_length" value="0.410" />
+  <xacro:property name="link_2_density" value="1" />
+  <xacro:property name="link_2_mass" value="${pi*link_2_length*pow(link_2_radius,2)*link_2_density}" />
+
+  <joint type="revolute" name="link_2_joint">
+    <origin xyz="0 0 ${link_1_length}" rpy="${pi/2} 0 0"/>
+    <child link="link_2_link"/>
+    <parent link="link_1_link"/>
+    <axis xyz="0 0 1" rpy="0 0 0"/>
+    <limit effort="100" velocity="100" lower="-${pi/2}" upper="${pi/2}"/>
+  </joint>
+  <!-- whole link lenth 0.504 -->
+  <link name="link_2_link">
+    <visual>
+      <origin xyz="0 -${arm_base_length + link_1_length} 0" rpy="-${pi/2} 0 0"/>
+      <geometry>
+        <mesh filename="package://fruit_robot/meshes/link_2_1.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0 ${link_2_length/2} 0" rpy="-${pi/2} 0 0"/>
+      <geometry>
+        <cylinder length="${link_2_length}" radius="${link_2_radius}"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin xyz="0 0 0" rpy="-${pi/2} 0 0"/>
+      <mass value="${link_2_mass}"/>
+      <inertia
+        ixx="${link_2_mass*(3*pow(link_2_radius,2)+pow(link_2_length,2))/12}" ixy="0.0" ixz="0.0"
+        iyy="${link_2_mass*(3*pow(link_2_radius,2)+pow(link_2_length,2))/12}" iyz="0.0"
+        izz="${link_2_mass*pow(link_2_radius,2)/2}"/>
+    </inertial>
+  </link>
+
+  <transmission name="trans_2">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="link_2_joint">
+      <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="trans_2_motor">
+      <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+
+  <!-- LINK 3 -->
+  <!-- ==================================== -->
+  <xacro:property name="link_3_radius" value="0.046" />
+  <xacro:property name="link_3_length" value="0.2084" />
+  <xacro:property name="link_3_density" value="1" />
+  <xacro:property name="link_3_mass" value="${pi*link_3_length*pow(link_3_radius,2)*link_3_density}" />
+
+  <joint type="revolute" name="link_3_joint">
+    <origin xyz="0 ${link_2_length} 0" rpy="0 ${pi} 0"/>
+    <child link="link_3_link"/>
+    <parent link="link_2_link"/>
+    <axis xyz="0 0 1" rpy="0 0 0"/>
+    <limit effort="100" velocity="100" lower="-${pi/2}" upper="${pi/2}"/>
+  </joint>
+
+  <link name="link_3_link">
+    <visual>
+      <origin xyz="0 -${link_2_length + link_1_length + arm_base_length} 0" rpy="-${pi/2} ${pi} 0"/>
+      <geometry>
+        <mesh filename="package://fruit_robot/meshes/link_3_1.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0 ${link_3_length/2} 0" rpy="-${pi/2} ${pi} 0"/>
+      <geometry>
+        <cylinder length="${link_3_length}" radius="${link_3_radius}"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin xyz="0 0 0" rpy="-${pi/2} ${pi} 0"/>
+      <mass value="${link_3_mass}"/>
+      <inertia
+        ixx="${link_3_mass*(3*pow(link_3_radius,2)+pow(link_3_length,2))/12}" ixy="0.0" ixz="0.0"
+        iyy="${link_3_mass*(3*pow(link_3_radius,2)+pow(link_3_length,2))/12}" iyz="0.0"
+        izz="${link_3_mass*pow(link_3_radius,2)/2}"/>
+    </inertial>
+  </link>
+
+  <transmission name="trans_3">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="link_3_joint">
+      <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="trans_3_motor">
+      <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+
+
+  <!-- LINK 4 -->
+  <!-- ==================================== -->
+  <xacro:property name="link_4_radius" value="0.046" />
+  <xacro:property name="link_4_length" value="0.1059" />
+  <xacro:property name="link_4_density" value="1" />
+  <xacro:property name="link_4_mass" value="${pi*link_4_length*pow(link_4_radius,2)*link_4_density}" />
+
+  <joint type="revolute" name="link_4_joint">
+    <origin xyz="0 ${link_3_length} 0" rpy="-${pi/2} ${pi} 0"/>
+    <child link="link_4_link"/>
+    <parent link="link_3_link"/>
+    <axis xyz="0 0 1" rpy="0 0 0"/>
+    <limit effort="100" velocity="100" lower="-${pi/2}" upper="${pi/2}"/>
+  </joint>
+
+  <link name="link_4_link">
+    <visual>
+      <origin xyz="0 0 -${link_3_length + link_2_length + link_1_length + arm_base_length}" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://fruit_robot/meshes/link_4_1.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0 0 ${link_4_length/2}" rpy="0 ${pi} 0"/>
+      <geometry>
+        <cylinder length="${link_4_length}" radius="${link_4_radius}"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 ${pi} 0"/>
+      <mass value="${link_4_mass}"/>
+      <inertia
+        ixx="${link_4_mass*(3*pow(link_4_radius,2)+pow(link_4_length,2))/12}" ixy="0.0" ixz="0.0"
+        iyy="${link_4_mass*(3*pow(link_4_radius,2)+pow(link_4_length,2))/12}" iyz="0.0"
+        izz="${link_4_mass*pow(link_4_radius,2)/2}"/>
+    </inertial>
+  </link>
+
+  <transmission name="trans_4">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="link_4_joint">
+      <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="trans_4_motor">
+      <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+
+  <!-- LINK 5 -->
+  <!-- ==================================== -->
+  <xacro:property name="link_5_radius" value="0.046" />
+  <xacro:property name="link_5_length" value="0.1059" />
+  <xacro:property name="link_5_density" value="1" />
+  <xacro:property name="link_5_mass" value="${pi*link_5_length*pow(link_5_radius,2)*link_5_density}" />
+
+  <joint type="revolute" name="link_5_joint">
+    <origin xyz="0 0 ${link_4_length}" rpy="-${pi/2} ${pi} 0"/>
+    <child link="link_5_link"/>
+    <parent link="link_4_link"/>
+    <axis xyz="0 0 1" rpy="0 0 0"/>
+    <limit effort="100" velocity="100" lower="-${pi/2}" upper="${pi/2}"/>
+  </joint>
+
+  <link name="link_5_link">
+    <visual>
+      <origin xyz="0 -${link_4_length + link_3_length + link_2_length + link_1_length + arm_base_length} 0" rpy="-${pi/2} ${pi} 0"/>
+      <geometry>
+        <mesh filename="package://fruit_robot/meshes/link_5_1.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0 ${link_5_length/2} 0" rpy="-${pi/2} ${pi} 0"/>
+      <geometry>
+        <cylinder length="${link_5_length}" radius="${link_5_radius}"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin xyz="0 0 0" rpy="-${pi/2} ${pi} 0"/>
+      <mass value="${link_5_mass}"/>
+      <inertia
+        ixx="${link_5_mass*(3*pow(link_5_radius,2)+pow(link_5_length,2))/12}" ixy="0.0" ixz="0.0"
+        iyy="${link_5_mass*(3*pow(link_5_radius,2)+pow(link_5_length,2))/12}" iyz="0.0"
+        izz="${link_5_mass*pow(link_5_radius,2)/2}"/>
+    </inertial>
+  </link>
+
+  <transmission name="trans_5">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="link_5_joint">
+      <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="trans_5_motor">
+      <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+
+  <!-- LINK 6 -->
+  <!-- ==================================== -->
+  <xacro:property name="link_6_radius" value="0.046" />
+  <xacro:property name="link_6_length" value="0.0615" />
+  <xacro:property name="link_6_density" value="1" />
+  <xacro:property name="link_6_mass" value="${pi*link_6_length*pow(link_6_radius,2)*link_6_density}" />
+
+  <joint type="revolute" name="link_6_joint">
+    <origin xyz="0 ${link_5_length} 0" rpy="-${pi/2} 0 0"/>
+    <child link="link_6_link"/>
+    <parent link="link_5_link"/>
+    <axis xyz="0 0 1" rpy="0 0 0"/>
+    <limit effort="100" velocity="100" lower="-${pi/2}" upper="${pi/2}"/>
+  </joint>
+
+  <link name="link_6_link">
+    <visual>
+      <origin xyz="0 0 -${link_5_length + link_4_length + link_3_length + link_2_length + link_1_length + arm_base_length}" rpy="-${pi} ${pi} 0"/>
+      <geometry>
+        <mesh filename="package://fruit_robot/meshes/link_6_1.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0 0 ${link_6_length/2}" rpy="-${pi} ${pi} 0"/>
+      <geometry>
+        <cylinder length="${link_6_length}" radius="${link_6_radius}"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin xyz="0 0 0" rpy="-${pi/2} ${pi} 0"/>
+      <mass value="${link_6_mass}"/>
+      <inertia
+        ixx="${link_6_mass*(3*pow(link_6_radius,2)+pow(link_6_length,2))/12}" ixy="0.0" ixz="0.0"
+        iyy="${link_6_mass*(3*pow(link_6_radius,2)+pow(link_6_length,2))/12}" iyz="0.0"
+        izz="${link_6_mass*pow(link_6_radius,2)/2}"/>
+    </inertial>
+  </link>
+
+  <transmission name="trans_6">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="link_6_joint">
+      <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="trans_6_motor">
+      <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+
+  <!-- Gripper -->
+  <!-- ==================================== -->
+  <xacro:property name="gripper_radius" value="0.046" />
+  <xacro:property name="gripper_length" value="0.0615" />
+  <xacro:property name="gripper_density" value="1" />
+  <xacro:property name="gripper_mass" value="${pi*gripper_length*pow(gripper_radius,2)*gripper_density}" />
+
+  <joint type="fixed" name="gripper_joint">
+    <origin xyz="0 0 ${link_6_length}" rpy="0 0 0"/>
+    <child link="gripper_link"/>
+    <parent link="link_6_link"/>
+  </joint>
+
+  <link name="gripper_link">
+    <visual>
+      <origin xyz="0 0 -${link_6_length + link_5_length + link_4_length + link_3_length + link_2_length + link_1_length + arm_base_length}" rpy="-${pi} ${pi} 0"/>
+      <geometry>
+        <mesh filename="package://fruit_robot/meshes/gripper_1.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0 0 ${gripper_length/2}" rpy="-${pi} ${pi} 0"/>
+      <geometry>
+        <cylinder length="${gripper_length}" radius="${gripper_radius}"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin xyz="0 0 0" rpy="-${pi/2} ${pi} 0"/>
+      <mass value="${gripper_mass}"/>
+      <inertia
+        ixx="${gripper_mass*(3*pow(gripper_radius,2)+pow(gripper_length,2))/12}" ixy="0.0" ixz="0.0"
+        iyy="${gripper_mass*(3*pow(gripper_radius,2)+pow(gripper_length,2))/12}" iyz="0.0"
+        izz="${gripper_mass*pow(gripper_radius,2)/2}"/>
+    </inertial>
+  </link>
+
+  <!-- Basket -->
+  <!-- ==================================== -->
+  <joint name="basket_joint" type="fixed">
+    <parent link="mobile_body_link"/>
+    <child link="basket_link" />
+    <origin xyz="0 0 0.0" rpy="0 0 0"/>
+  </joint>
+
+  <xacro:property name="basket_length" value="0.492" />
+  <xacro:property name="basket_width" value="0.42" />
+  <xacro:property name="basket_height" value="0.314" />
+  <xacro:property name="basket_density" value="1" />
+  <xacro:property name="basket_mass" value="${basket_length*basket_height*basket_width*basket_density}" />
+
+  <link name="basket_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://fruit_robot/meshes/basket_1.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="${0.150 + basket_length/2} 0 0.044" rpy="0 0 0"/>
+      <geometry>
+        <box size="${basket_length+0.005} ${basket_width} ${basket_height}"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="${basket_mass}"/>
+      <inertia
+        ixx="${basket_mass*(pow(basket_height,2) + pow(basket_width,2))/12}" ixy="0.0" ixz="0.0"
+        iyy="${basket_mass*(pow(basket_length,2) + pow(basket_height,2))/12}" iyz="0.0"
+        izz="${basket_mass*(pow(basket_length,2) + pow(basket_width,2))/12}"/>
+    </inertial>
+  </link>
+
+  <!-- Lidar -->
+  <!-- ==================================== -->
+  <xacro:property name="lidar_radius" value="0.047" />
+  <xacro:property name="lidar_length" value="0.151" />
+  <xacro:property name="lidar_density" value="1" />
+  <xacro:property name="lidar_mass" value="${pi*lidar_length*pow(lidar_radius,2)*lidar_density}" />
+
+  <joint name="lidar_joint" type="fixed">
+    <parent link="mobile_body_link"/>
+    <child link="lidar_link" />
+    <origin xyz="0 0 0.0" rpy="0 0 0"/>
+  </joint>
+
+  <link name="lidar_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://fruit_robot/meshes/lidar_1.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="-0.215 0 -0.035" rpy="0 0 0"/>
+      <geometry>
+        <cylinder length="${lidar_length}" radius="${lidar_radius}"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="${lidar_mass}"/>
+      <inertia
+        ixx="${lidar_mass*(3*pow(lidar_radius,2)+pow(lidar_length,2))/12}" ixy="0.0" ixz="0.0"
+        iyy="${lidar_mass*(3*pow(lidar_radius,2)+pow(lidar_length,2))/12}" iyz="0.0"
+        izz="${lidar_mass*pow(lidar_radius,2)/2}"/>
+    </inertial>
+  </link>
+
+</robot>
